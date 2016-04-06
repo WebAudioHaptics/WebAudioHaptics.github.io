@@ -1,0 +1,504 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>WebAudioHaptics: tutorial on Haptics with Web Audio at the Web Audio Conference</title>
+
+		<meta name="description" content="WebAudioHaptics: tutorial on Haptics with Web Audio at the Web Audio Conference">
+		<meta name="author" content="Christian Frisson, Thomas Pietrzak, Siyan Zhao, Zachary Schwemler, Ali Israr">
+
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+		
+		<script type="text/javascript" src="js/jquery-2.1.0.min.js"></script>
+		<script type="text/javascript" src="js/pd-fileutils.js"></script>
+		<script type="text/javascript" src="js/webpd-latest.js"></script>
+		<script type="text/javascript" src="js/nexusUI.js"></script>
+		<script type="text/javascript" src="js/webaudiohaptics.js"></script>
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/white.css" id="theme">
+
+		<!-- Code syntax highlighting -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+			<style>
+			.reveal section img {
+				border:none;
+				box-shadow:none;
+				margin-top: 0px;
+				margin-bottom: 0px;
+			}
+			</style>
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+				<section data-background="images/Hardware/StereoHapticsBackground.png">
+					<h1>Web Audio Haptics</h1>
+					<h3>Tutorial <br/>on Haptics <br/>with Web Audio</h3>
+					<p>2nd Web Audio Conference 2016</p>
+					<p>Georgia Tech, Atlanta, USA, April 6</p>
+					<p>
+						<small>Christian Frisson, Thomas Pietrzak, Siyan Zhao, Zachary Schwemler, Ali Israr</small>
+					</p>
+				</section>
+				
+				<section>
+					<h2>Team</h2>
+						<div style="float:left;width:19%">
+							<img src="images/Team/ChristianFrisson.jpg" style="width:100%"/>
+							<div style="text-align:center;font-size:11pt">
+								Christian Frisson<br/>
+								University of Mons<br/>
+								Mons, Belgium<br/>
+								<a href="http://christian.frisson.re">christian.frisson.re</a><br/>
+								<img src="images/Team/UnivMons.png" style="width:100%"/>
+							</div>
+						</div>
+						<div style="float:left;width:19%">
+							<img src="images/Team/ThomasPietrzak.jpg" style="width:100%"/>
+							<div style="text-align:center;font-size:11pt">
+								Thomas Pietrzak<br/>
+								University of Lille 1 / Inria<br/>
+								Lille, France<br/>
+								<a href="http://www.thomaspietrzak.com">thomaspietrzak.com</a><br/>
+								<img src="images/Team/UnivLille1.png" style="width:100%"/>
+							</div>
+						</div>
+						<div style="float:left;width:19%">
+							<img src="images/Team/SiyanZhao.jpg" style="width:100%"/>
+							<div style="text-align:center;font-size:11pt">
+								Siyan Zhao<br/>
+								Disney Research<br/>
+								Pittsburgh, USA<br/>
+								<a href="http://siyanz.com/">siyanz.com</a><br/>
+								<img src="images/Team/DisneyResearch.png" style="width:100%"/>
+							</div>
+						</div>
+						<div style="float:left;width:19%">
+							<img src="images/Team/ZacharySchwemler.jpg" style="width:100%"/>
+							<div style="text-align:center;font-size:11pt">
+								Zachary Schwemler<br/>
+								Carnegie Mellon University<br/>
+								Pittsburgh, USA<br/>
+								<a href="http://zach-schwemler.squarespace.com/">zach-schwemler<br/>.squarespace.com</a><br/>
+								<img src="images/Team/CarnegieMellon.png" style="width:100%"/>
+							</div>
+						</div>
+						<div style="float:left;width:19%">
+							<img src="images/Team/AliIsrar.jpg" style="width:100%"/>
+							<div style="text-align:center;font-size:11pt">
+								Ali Israr<br/>
+								Disney Research<br/>
+								Pittsburgh, USA<br/>
+								<a href="http://www.aliisrar.info">aliisrar.info</a><br/>
+								<img src="images/Team/DisneyResearch.png" style="width:100%"/>
+							</div>
+						</div>
+				</section>
+				
+				<section>
+					<h2>Tutorial material</h2>
+						<p>Slides including Web Audio patches available on:
+							<br/>
+							<a href="http://WebAudioHaptics.github.io">http://WebAudioHaptics.github.io</a>
+							<br/>
+							Clone repositories from:
+							<br/>
+							<a href="https://github.com/WebAudioHaptics">https://github.com/WebAudioHaptics</a>
+						</p>
+				</section>
+				
+				<section>
+					<h2>Outline</h2>
+					<ul>
+						<li>Software: WebPd, NexusUI</li>
+						<li>Hardware: actuators</li>
+						<li>Exploration: tactile illusions</li>						
+					</ul>
+					<aside class="notes">
+						<ul>
+							<li>get an overview on Web Audio software: WebPd, NexusUI</li>
+							<li>get an overview on hardware: actuators</li>
+							<li>explore tactile illusions using web-based audio tools and a box connecting actuators and sensors to your computer audio I/O</li>
+						</ul>
+					</aside>
+				</section>
+				
+				<section>
+				<section>
+					<h2>Software</h2>
+				</section>
+				<section>
+					<h2>PureData</h2>
+					<p>A desktop app for patch-based visual programming of audio/video/sensor data flows</p>
+					<img src="images/Software/PureDataPatch.png" style="width:45%"/>
+					<p><small>Main author: Miller Puckette
+					<br/><a href="http://puredata.info">http://puredata.info</a></small></p>
+				</section>	
+				<section>
+					<h2>WebPd</h2>
+					<p>PureData patches running on a browser with Web Audio</p>
+					<img src="images/Software/stereohaptics-activity2.png" style="width:50%"/>
+					<p><small>Main authors: Sébastien Piquemal, Chris McCormick
+					<br/><a href="https://github.com/sebpiq/WebPd">https://github.com/sebpiq/WebPd</a>
+					<br/>forked: <a href="https://github.com/WebAudioHaptics/WebPd">https://github.com/WebAudioHaptics/WebPd</a></small></p>
+				</section>
+				<style>
+				.pdPatch text {
+				  font-size: 30%;
+				}
+				</style>
+				<section>
+					<h2>NexusUI</h2>
+					<p>JavaScript toolkit of HTML5 audio interfaces</p>
+					 <canvas nx="dial" id="dial0" label="Dial" min="0" max="1000" height="100" width="100"></canvas>
+ 					<canvas nx="button" id="button0" label="Button" height="100" width="100"></canvas>
+ 					<canvas nx="toggle" id="toggle0" label="Toggle" height="100" width="100"></canvas>
+					<canvas nx="envelope" id="envelope0" label="Envelope" height="100" width="100"></canvas>
+					<p><small>Main authors: Ben Taylor, Jesse Allison
+					<br/><a href="http://www.nexusosc.com">http://www.nexusosc.com</a>
+					<br/><a href="https://github.com/lsu-emdm/nexusUI">https://github.com/lsu-emdm/nexusUI</a></small></p>
+				</section>
+				<section>
+					<h2>Activity</h2>
+					<p>Test WebPd and NexusUI</p>
+				    <canvas nx="dial" id="freqLeft1" label="Freq (left)" min="0" max="1000" height="100" width="100"></canvas>
+					<canvas nx="dial" id="ampLeft1" label="Amp (left)" min="0" max="1" height="100" width="100"></canvas>
+				    <canvas nx="dial" id="freqRight1" label="Freq (right)" min="0" max="1000" height="100" width="100"></canvas>
+					<canvas nx="dial" id="ampRight1" label="Amp (right)" min="0" max="1" height="100" width="100"></canvas>
+					<div id="pdPatch1" class="pdPatch"></div>
+					<p><small>Turn on amplifications and fiddle with frequencies!</small></p>
+					<script>
+					addActivity1('pd/Activity1.pd','pdPatch1','1')
+					</script>
+				</section>
+				<section>
+					<h2>Activity</h2>
+					<p>NexusUI controls not showing?</p>
+					<p><small>Reload the slide</small></p>
+					<p>WebPd not outputing sound?</p>
+					<p><small>Open your browser's console/inspector to check for messages.
+						<br/>Test if linear ramps are supported by your browser: <a href="http://webaudiohaptics.github.io/WAAOffsetNode/waatest/">http://webaudiohaptics.github.io/WAAOffsetNode/waatest/</a></small></p>
+				</section>
+				</section>
+				
+				<section>
+				<section>
+					<h2>Hardware</h2>
+				</section>
+				<section>
+					<h2>Vibrating DC Motors</h2>
+					<svg version="1.1" xmlns:svg="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="205" height="110" >
+						<g>
+							<defs>
+							<filter filterUnits="userSpaceOnUse" id="shadow1"><feOffset in="SourceGraphic" result="offset" dx="3.5355" dy="-3.5355" /><feColorMatrix in="offset" result="offset-color" type="matrix" values="0 0 0 0 0.0000 0 0 0 0 0.0000 0 0 0 0 0.0000 0 0 0 1.0000 0"/><feMerge><feMergeNode in="offset-color" /><feMergeNode in="SourceGraphic" /></feMerge></filter></defs><path d=" 
+							M04.9660,107.8524
+							L35.1029,107.8524
+							L35.1029,20.2814
+							L46.0936,20.2814
+							L46.0936,108.7181
+							L68.9356,108.7181
+							L68.9356,19.8859
+							L111.1791,19.8859
+							L111.1791,108.2576
+							L126.6161,108.2576
+							L126.6161,18.9864
+							L163.4640,18.9864
+							L163.4640,109.2792
+							L182.6873,109.2792
+							L182.6873,18.9700
+							L196.3230,18.9700
+							L196.3230,108.3249
+							L204.5978,108.3249" 
+							style="stroke-width: 2.0000; stroke: #000000; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; fill: none; filter:url(#shadow1); "/>
+						</g>
+					</svg>
+					<img src="images/Hardware/DCMotorCircuit.png" style="width:30%"/>
+					<video controls=false autoplay=true loop=true src="videos/Hardware/DCMotorPrecisionMicrodrives10mm.mp4" style="width:10%"></video>
+					<video controls=false autoplay=true loop=true src="videos/Hardware/DCMotorPrecisionMicrodrives12mm.mp4" style="width:10%"></video>
+					<video controls=false autoplay=true loop=true src="videos/Hardware/DCMotorPrecisionMicrodrives24mm.mp4" style="width:10%"></video>
+					<p>Embedded in smartphones</p>
+					<aside class="notes">	
+					<div style="float:left;width:50%">
+					<p>Pros</p>
+					<ul>
+						<li>small size, low power</li>
+						<li>simple circuit, low cost</li>
+						<li>digital signal</li>
+					</ul>
+					</div>
+					<div style="float:left;width:50%">
+					<p>Cons</p>
+					<ul>
+						<li>pre-defined frequency-amplitude profiles</li>
+						<li>slow response time</li>
+					</ul>
+					</div>
+					</aside>
+				</section>
+				
+				<section>
+					<h2>High torque and servo motors</h2>
+					<img src="images/Hardware/ServoStepper.jpg" style="width:20%"/>					
+					<img src="images/Hardware/DCMotorBoard.jpg" style="width:40%"/>
+					<br/>
+					<img src="images/Hardware/DCMotorHBridge.jpg" style="width:30%"/>
+					<img src="images/Hardware/Hapkit.png" style="width:50%"/>
+					<p><small><a href="http://hapkit.stanford.edu">http://hapkit.stanford.edu</a></small></p>
+					<p>Used for force or position control (robotics, haptics)</p>
+				</section>
+								
+				<section>
+					<h2>Linear Resonant Actuators</h2>
+					<img src="images/Hardware/LinearResonantActuatorsDisplacement.png" style="width:30%"/>					
+					<img src="images/Hardware/LinearResonantActuatorsFreqResp.png" style="width:30%"/>
+				</section>
+
+				<section>
+					<h2>Voice Coil Actuators</h2>
+					<img src="images/Hardware/VoiceCoilActuatorsACWaveform.png" style="width:30%"/>					
+					<img src="images/Hardware/VoiceCoilActuatorsFreqResp.png" style="width:30%"/>
+					
+					<img src="images/Hardware/VoiceCoilActuatorsAudioAmp.jpg" style="width:20%"/>					
+					<img src="images/Hardware/VoiceCoilActuatorsHaptuator.png" style="width:30%"/>
+					
+					<img src="images/Hardware/VoiceCoilActuatorsTactor.png" style="width:30%"/>		
+					<img src="images/Hardware/VoiceCoilActuatorsTectonicElements.jpg" style="width:20%"/>			
+				</section>
+				
+				<section>
+					<h2>Electromagnetic Actuators</h2>
+					<div style="float:left;width:30%">
+						<p>Subwoofers</p>
+						<img src="images/Hardware/ElectromagneticActuatorsSub1.png" style="width:100%"/><br/>
+						<img src="images/Hardware/ElectromagneticActuatorsSub2.png" style="width:100%"/>
+					</div>
+					<div style="float:left;width:30%">
+						<p>Butt kickers</p>
+						<img src="images/Hardware/ElectromagneticActuatorsButtKick.png" style="width:100%"/><br/>
+						<img src="images/Hardware/ElectromagneticActuatorsSaddleKick.png" style="width:100%"/>
+					</div>
+					<div style="float:left;width:30%">
+						<p>Tactile transducers</p>
+						<img src="images/Hardware/ElectromagneticActuatorsTactile1.png" style="width:100%"/><br/>
+						<img src="images/Hardware/ElectromagneticActuatorsTactile2.png" style="width:100%"/>
+					</div>			
+				</section>
+				
+				<section>
+					<h2>More AC Actuators</h2>
+					<div style="float:left;width:30%">
+						<p>Piezo actuators</p>
+						<img src="images/Hardware/ACActuatorsPiezo.png" style="width:100%"/><br/>
+						<img src="images/Hardware/ACActuatorsTouchEngine.jpg" style="width:100%"/>
+					</div>
+					<div style="float:left;width:30%">
+						<p>Electroactive polymers</p>
+						<video controls=false src="videos/Hardware/ACActuatorsViviTouch.mp4" style="width:100%"></video><br/>
+						<img src="images/Hardware/ACActuatorsVivitouch.png" style="width:100%"/>
+					</div>
+					<div style="float:left;width:30%">
+						<p>Muscle stimulators</p>
+						<img src="images/Hardware/ACActuatorsTensUnitMuscleStimulator.jpg" style="width:100%"/>
+					</div>						
+				</section>
+				
+				<section>
+					<h2>WebAudioHaptics Kit</h2>
+						<svg width="500" height="500">
+							<image x="0" y="0" width="100%" height="100%" xlink:href="images/Hardware/StereoHapticsBoard.png"></image>
+							<g class="fragment">
+							<rect x="5%" y="45%" width="30%" height="10%" fill="red" opacity="0.5"/>
+							<rect x="5%" y="55%" width="45%" height="37%" fill="red" opacity="0.5"/>
+							<text x="5%" y="95%" width="45%" height="40%" fill="black" font-size="50%">Power supply +/- 5/9 V</text>
+							<g/>
+							<g class="fragment">
+							<rect x="50%" y="55%" width="20%" height="37%" fill="yellow" opacity="0.5"/>				
+							<rect x="35%" y="45%" width="15%" height="10%" fill="yellow" opacity="0.5"/>
+							<rect x="5%" y="20%" width="45%" height="25%" fill="yellow" opacity="0.5"/>
+							<text x="5%" y="20%" width="45%" height="40%" fill="black" font-size="50%">Sensor &amp; conditioning</text>
+							<text x="50%" y="95%" width="45%" height="40%" fill="black" font-size="50%">To audio in</text>
+							</g>
+							<g class="fragment">
+							<rect x="50%" y="5%" width="37%" height="50%" fill="green" opacity="0.5"/>	
+							<rect x="70%" y="55%" width="17%" height="37%" fill="green" opacity="0.5"/>			
+							<text x="50%" y="5%" width="45%" height="40%" fill="black" font-size="50%">Actuator amplification</text>
+							<text x="70%" y="95%" width="45%" height="40%" fill="black" font-size="50%">From audio out</text>
+						</g>
+						</svg>
+						<p><small>Siyan Zhao, Zachary Schwemler, Adam Fritz, and Ali Israr. "Stereo Haptics: Designing Haptic Interactions using Audio Tools." In Proceedings of the TEI '16: Tenth International Conference on Tangible, Embedded, and Embodied Interaction (TEI '16). DOI=<a href="http://dx.doi.org/10.1145/2839462.2854120">10.1145/2839462.2854120</a> </small></p>
+				</section>							
+				<section>
+					<h2>Activity</h2>
+					<p>Plug the WebAudioHaptics kit</p>
+					<img class="fragment" src="images/Hardware/StereoHapticsArch1.png" style="width:60%"/><br/>
+					<img class="fragment" src="images/Hardware/StereoHapticsArch2.png" style="width:60%"/>
+				</section>
+				<section>
+					<h2>Activity</h2>
+					<p>Play with the WebAudioHaptics kit</p>
+				    <canvas nx="dial" id="freqLeft2" label="Freq (left)" min="0" max="1000" height="100" width="100"></canvas>
+					<canvas nx="dial" id="ampLeft2" label="Amp (left)" min="0" max="1" height="100" width="100"></canvas>
+				    <canvas nx="dial" id="freqRight2" label="Freq (right)" min="0" max="1000" height="100" width="100"></canvas>
+					<canvas nx="dial" id="ampRight2" label="Amp (right)" min="0" max="1" height="100" width="100"></canvas>
+					<div id="pdPatch1" class="pdPatch"></div>
+					<p><small>Turn on amplifications and fiddle with frequencies!</small></p>
+					<script>
+					addActivity1('pd/Activity1.pd','pdPatch1','2')
+					</script>
+				</section>
+				</section>
+				
+				<section>
+				<section>
+					<h2>Exploration</h2>
+				</section>
+				<section>
+					<h2>Body locations</h2>
+					<img src="images/HapticIllusions/BodyLocationBack.png" style="width:30%;">
+					<img src="images/HapticIllusions/BodyLocationArm.png" style="width:27.75%;">
+					<img src="images/HapticIllusions/BodyLocationHand.png" style="width:30%;">					
+					<aside class="notes">
+						<p></p>
+					</aside>
+				</section>
+				<section>
+					<h2>Tactile illusions</h2>
+					<p>Apparent Tactile Motion</p>
+					<p>Saltation</p>
+					<aside class="notes">
+						<p>Why are we talking about haptic illusions? Many illusions give people a moving sensation. This can add a new dimension to current haptic feedback in technology devices.
+These are robust and can be perceived consistently among the majority of the people. 
+The best part is that they are easy to generate.
+So the goal of this section of the studio is to introduce the perception side of haptic illusions. We will talk about 2 different types of haptic illusions. Then we will focus on one of them and learn how to create</p>
+					</aside>
+				</section>
+				<section>
+					<h2>Apparent Tactile Motion</h2>
+					<video controls=true src="videos/HapticIllusions/ApparentTactileMotionAnimation.m4v">
+					<aside class="notes">
+						<p>ATM feels as if there is an object traveling continuous between the two stimulation points.</p>
+					</aside>
+				</section>
+				<section>
+					<h2>Control parameters</h2>
+					<img src="images/HapticIllusions/ControlParametersAnnotated.png" style="width:60%;">
+					<aside class="notes">
+						<p>So if you remember from the animation, apparent tactile motions require two point of actuation. These parameters can define the direction and speed of the motion. Direction is simple. duration and SOA are correlated to change the speed.</p>
+						<ul>
+							<li>Direction</li>
+							<li>Speed</li>
+							<li>Duration</li>
+							<li>Stimulus Onset Asynchrony (SOA)</li>
+							<li>Ramp</li>
+						</ul>
+					</aside>
+				</section>
+				<section>
+					<h2>Study</h2>
+					<img src="images/HapticIllusions/Study1Stimuli.png" style="width:60%;">
+					<p>SOA = 0.28 * duration + 60.7
+						<small>S. Zhao, A. Israr and R. Klatzky, "Intermanual apparent tactile motion on handheld tablets," <br/>IEEE World Haptics Conference (WHC) 2015, doi: <a href="http://dx.doi.org/10.1109/WHC.2015.7177720">10.1109/WHC.2015.7177720</a></small></p>
+				</section>
+
+				<section>
+					<h2>Activity</h2>
+					<p>Explore the effects of parameters</p>
+					<div width="20Opx">
+				    <canvas nx="dial" id="intensity1" label="Intensity" min="0" max="1" height="100" width="100"></canvas>
+					<canvas nx="dial" id="duration1" label="Duration" min="0.01" max="1000" height="100" width="100"></canvas>
+					<canvas nx="dial" id="soa1" label="SOA" min="0" max="1000" height="100" width="100"></canvas>
+					<canvas nx="button" id="bang1" label="Trigger" height="100" width="100"></canvas>
+					<canvas nx="envelope" id="envelopeLeft1" label="Envelope (left)" height="100" width="100"></canvas>
+					<canvas nx="envelope" id="envelopeRight1" label="Envelope (right)" height="100" width="100"></canvas>
+					<!--<canvas nx="toggle" id="svgToggle1" label="Toggle SVG"></canvas>-->
+					</div>
+					<div id="pdPatch1" class="pdPatch"></div>
+					<script>
+					Pd.start();
+					addActivity('pd/Activity2.pd','pdPatch1','1')
+					</script>
+				</section>
+				<section>
+					<h2>Saltation</h2>
+					<video controls=true src="videos/HapticIllusions/SaltationAnimation.m4v">
+					<aside class="notes">
+						<p>Saltation, unlike apparent tactile motion creates a hopping movement between two points of actuation.
+You might wonder why we perceive these illusions. There have been some studies using fMRI to examine brain activation when people perceive haptic illusions. What they found was that when our skin feels the two actuation points, there’s also actuation between the two touch points in the somatosensory cortex. It is the main sensory receptive area for the sense of touch. This activation is what causes us to feel the illusory motion. 
+Now we know what these two illusions are and why we feel them. How can we create these illusions with haptic technology? In our case, how do we use audio to generate illusions? For this question, we are specifically focus on Apparent Tactile Motion.</p>
+					</aside>
+				</section>
+				<section>
+					<h2>Activity (optional)</h2>
+					<p>Let's code it yourself now!</p>
+				</section>	
+	
+				</section>
+				
+				<section>
+					<h2>Thanks for your participation!</h2>
+						<p>Slides including Web Audio patches will remain on:
+							<br/>
+							<a href="http://WebAudioHaptics.github.io">http://WebAudioHaptics.github.io</a>
+							<br/>
+							Clone repositories from:
+							<br/>
+							<a href="https://github.com/WebAudioHaptics">https://github.com/WebAudioHaptics</a>
+						</p>
+				</section>
+
+			</div>
+
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+
+			// Full list of configuration options available at:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+				slideNumber: true,
+				transition: 'none', // none/fade/slide/convex/concave/zoom
+
+				// Optional reveal.js plugins
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true },
+					{ src: 'plugin/notes/notes.js', async: true }
+				]
+			});
+
+		</script>
+	</body>
+</html>
