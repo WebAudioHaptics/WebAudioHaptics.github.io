@@ -65,6 +65,8 @@ function addActivity1(patchUrl, pdPatchId, suffix) {
 
 function addActivity(patchUrl, pdPatchId, suffix) {
 
+	console.log('addActivity', patchUrl, pdPatchId, suffix)
+
 	var defaultIntensity = 0.3;
 	var defaultDuration = 100;
 	var maxDuration = 2000;
@@ -79,6 +81,9 @@ function addActivity(patchUrl, pdPatchId, suffix) {
 		var envelopeLeft = nx.widgets['envelopeLeft' + suffix];
 		var envelopeRight = nx.widgets['envelopeRight' + suffix];
 		var svgToggle = nx.widgets['svgToggle' + suffix];
+		var idealDuration = nx.widgets['idealDuration' + suffix];
+		var idealSoa = nx.widgets['idealSoa' + suffix];
+		console.log(nx.widgets)
 
 		if (intensity) {
 			intensity.on('value', function(data) {
@@ -88,14 +93,29 @@ function addActivity(patchUrl, pdPatchId, suffix) {
 		}
 		if (duration) {
 			duration.on('value', function(data) {
-				//console.log('duration', data)
-				Pd.send('duration', [data])
+				Pd.send('duration', [data]);
+				if (idealSoa) {
+					// SOA = 0.28 * duration + 60.7
+					var idealSoaVal = 0.28 * data + 60.7
+					//console.log('idealSoa', idealSoaVal)
+					idealSoa.set({
+						value: idealSoaVal
+					})
+				}
 			})
 		}
 		if (soa) {
 			soa.on('value', function(data) {
 				//console.log('soa', data)
 				Pd.send('soa', [data])
+				if (idealDuration) {
+					// SOA = 0.28 * duration + 60.7
+					var idealDurationVal = (data - 60.7)/0.28;
+					//console.log('idealDuration', idealDurationVal)
+					idealDuration.set({
+						value: idealDurationVal
+					})
+				}
 			})
 		}
 		if (bang) {
@@ -201,6 +221,12 @@ function addActivity(patchUrl, pdPatchId, suffix) {
 			value: defaultDuration
 		})
 		soa.set({
+			value: defaultSOA
+		})
+		idealDuration.set({
+			value: defaultDuration
+		})
+		idealSoa.set({
 			value: defaultSOA
 		})
 

@@ -433,15 +433,19 @@ So the goal of this section of the studio is to introduce the perception side of
 				<section>
 					<h2>Activity</h2>
 					<p>Explore the effects of parameters</p>
-					<div width="20Opx">
+
 				    <canvas nx="dial" id="intensity1" label="Intensity" min="0" max="1" height="100" width="100"></canvas>
 					<canvas nx="dial" id="duration1" label="Duration" min="0.01" max="1000" height="100" width="100"></canvas>
 					<canvas nx="dial" id="soa1" label="SOA" min="0" max="1000" height="100" width="100"></canvas>
 					<canvas nx="button" id="bang1" label="Trigger" height="100" width="100"></canvas>
-					<canvas nx="envelope" id="envelopeLeft1" label="Envelope (left)" height="100" width="100"></canvas>
-					<canvas nx="envelope" id="envelopeRight1" label="Envelope (right)" height="100" width="100"></canvas>
+					<br/>
+					<canvas nx="envelope" id="envelopeLeft1" label="Envelope (left)" height="100" width="200"></canvas>
+					<canvas nx="envelope" id="envelopeRight1" label="Envelope (right)" height="100" width="200"></canvas>
+					<br/>
+					<canvas nx="dial" id="idealDuration1" label="Ideal duration" min="0.01" max="1000" height="100" width="100"></canvas>
+					<canvas nx="dial" id="idealSoa1" label="Ideal SOA" min="0" max="1000"  height="100" width="100"></canvas>
 					<!--<canvas nx="toggle" id="svgToggle1" label="Toggle SVG"></canvas>-->
-					</div>
+
 					<div id="pdPatch1" class="pdPatch"></div>
 					<script>
 					Pd.start();
